@@ -20,7 +20,17 @@
     </ul>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (Model.Aggregations != null)
+{
+    <h3>Aggregations</h3>
+    @if (Model.Aggregations.ContainsKey("pageCounts"))
+    {
+        <h4>PageCounts (Range)</h4>
+        <ul>
+            @foreach (var bucket in Model.Aggregations.Range("pageCounts").Buckets)
+            {
+                <li>@bucket.Key: @bucket.DocCount</li>
+            }
+        </ul>
+    }
+}
