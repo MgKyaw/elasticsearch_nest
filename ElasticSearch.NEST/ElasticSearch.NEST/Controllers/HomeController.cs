@@ -1,7 +1,6 @@
 ﻿using ElasticSearch.NEST.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Nest;
 using System.Diagnostics;
 
 namespace ElasticSearch.NEST.Controllers
@@ -17,13 +16,30 @@ namespace ElasticSearch.NEST.Controllers
             _client = client;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string query)
         {
-            var results = _client.Search<Book>(s => s
-                .Query(q => q
-                    .MatchAll()
-                )
-            );
+            ISearchResponse<Book> results;
+
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                results = _client.Search<Book>(s => s
+                    .Query(q => q
+                        .Term(t => t
+                            .Field(f => f.Isbn)
+                            .Value(query)
+                        )
+                    )
+                );
+            }
+            else
+            {
+                results = _client.Search<Book>(s => s
+                    .Query(q => q
+                        .MatchAll()
+                    )
+                );
+            }
+
             return View(results);
         }
 
