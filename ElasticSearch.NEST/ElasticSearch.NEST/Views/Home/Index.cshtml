@@ -33,4 +33,15 @@
             }
         </ul>
     }
+
+    @if (Model.Aggregations.ContainsKey("categories"))
+    {
+        <h4>Categories (Terms)</h4>
+        <ul>
+            @foreach (var bucket in Model.Aggregations.Terms("categories").Buckets)
+            {
+                <li>@bucket.Key: @bucket.DocCount</li>
+            }
+        </ul>
+    }
 }
