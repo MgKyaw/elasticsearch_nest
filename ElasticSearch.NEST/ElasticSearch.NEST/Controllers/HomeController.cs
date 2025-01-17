@@ -24,9 +24,9 @@ namespace ElasticSearch.NEST.Controllers
             {
                 results = _client.Search<Book>(s => s
                     .Query(q => q
-                        .Term(t => t
-                            .Field(f => f.Isbn)
-                            .Value(query)
+                        .Match(t => t
+                            .Field(f => f.Title)
+                            .Query(query)
                         )
                     )
                 );
