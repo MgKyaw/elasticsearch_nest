@@ -37,6 +37,16 @@ namespace ElasticSearch.NEST.Controllers
                     .Query(q => q
                         .MatchAll()
                     )
+                    .Aggregations(a => a
+                        .Range("pageCounts", r => r
+                            .Field(f => f.PageCount)
+                            .Ranges(r => r.From(0),
+                                    r => r.From(200).To(400),
+                                    r => r.From(400).To(600),
+                                    r => r.From(600)
+                            )
+                        )
+                    )
                 );
             }
 
