@@ -1,26 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using ElasticSearch.NEST.Models;
+﻿using ElasticSearch.NEST.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Nest;
+using System.Diagnostics;
 
 namespace ElasticSearch.NEST.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ElasticClient _client;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ElasticClient client)
         {
             _logger = logger;
+            _client = client;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var results = _client.Search<Book>(s => s
+                .Query(q => q
+                    .MatchAll()
+                )
+            );
+            return View(results);
         }
 
         public IActionResult Privacy()
