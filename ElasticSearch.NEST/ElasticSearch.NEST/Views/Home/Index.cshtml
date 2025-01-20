@@ -44,4 +44,15 @@
             }
         </ul>
     }
+
+    @if (Model.Aggregations.ContainsKey("statuses"))
+    {
+        <h4>Status (Terms)</h4>
+        <ul>
+            @foreach (var bucket in Model.Aggregations.Terms("statuses").Buckets)
+            {
+                <li>@bucket.Key: @bucket.DocCount</li>
+            }
+        </ul>
+    }
 }
