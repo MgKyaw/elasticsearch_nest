@@ -49,6 +49,9 @@ namespace ElasticSearch.NEST.Controllers
                         .Terms("categories", t => t
                             .Field("categories.keyword")
                         )
+                        .Terms("statuses", s => s
+                            .Field("Status.keyword")
+                        )
                     )
                 );
             }
